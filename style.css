@@ -1,0 +1,46 @@
+#container {
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(3, 1fr);
+    height: 500px;
+    width: 500px;
+    margin: 100px auto auto auto;
+    text-align: center;
+    justify-items: center;
+    align-items: center;
+    line-height: 150px;
+    font-size: 5em;
+    background-color: grey;
+
+}
+
+.squares {
+    /* margin: 2px; */
+    border: 1px solid black;
+    height: 150px;
+    width: 150px;
+    background-color: white;
+
+}
+
+#newGame {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 10px 0 0 0;
+    text-align: center;
+    width: 100px;
+}
+
+
+#outer {
+    width: 100%;
+}
+
+.inputForm {
+    position: relative;
+    margin: 10px auto auto auto;
+    text-align: center;
+
+}
