@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Calculator</title>
+  <title>Tic Tac Toe</title>
   <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
+
+<div id="winPopup">Congratulations the winner is Player1!</div>
+<div id="title">Tic Tac Toe</div>
 
 <div id="outer">
 <div id="container">
@@ -15,10 +18,10 @@
 <button id="newGame">New Game</button>
 
 <form id="formPopup" class="inputForm" style="display:none">
-    <label for="player1">Player 1:</label>
-    <input type="text" id="player1" value="" name="player1" placeholder="Enter Name">
-    <label for="player2">Player 2:</label>
-    <input type="text" id="player2" value="" name="player2" placeholder="Enter Name">
+    <label for="play1">Player 1:</label>
+    <input type="text" id="play1" value="" name="play1" placeholder="Enter Name">
+    <label for="play2">Player 2:</label>
+    <input type="text" id="play2" value="" name="play2" placeholder="Enter Name">
     <input type="button" value="Submit" id="startGame">
 </form>
 

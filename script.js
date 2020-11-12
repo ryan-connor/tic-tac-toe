@@ -1,9 +1,10 @@
 //Tic Tac Toe Script
+
 //gameboard module
 const gameboard = (() => {
 let container=document.getElementById("container");
 //array to represent 9 by 9 board
-let grid = [ "A", "B", ,"C" , ,"D" , ,"E" , ""];
+let grid = [ "", "", "","" , "","" , "","" , ""];
 
 const clearBoard = () => {
     for (let j=0; j<grid.length; j++) {
@@ -16,21 +17,8 @@ toDelete.forEach(( toggle) => {
     container.removeChild(toggle);
 });
 
-
-
 };
 
-//function to return value at given grid location
-const gridValue = (index) => {
-    if (index>=0 && index<=8) {
-        return grid[index];
-    }
-    else {
-        return "N";
-    }
-};
-
-//put check win/tie function on gameboard and then just call it from gameflow
 const gameWin = (arr) => {
     if (grid[arr[0]]+grid[arr[1]]+grid[arr[2]]=== "XXX" || grid[arr[0]]+grid[arr[1]]+grid[arr[2]]==="OOO") {
         return grid[arr[0]];
@@ -38,7 +26,7 @@ const gameWin = (arr) => {
     else {
         return false;
     }
-}
+};
 
 const gameTie = () => {
     let counter="";
@@ -58,10 +46,8 @@ const renderBoard = () => {
 //create 9 divs with class squares
 for (let i=0; i<grid.length; i++) {
 
-//create element/display in DOM
 const div =document.createElement("div");
 div.classList.toggle("squares");
-console.log(grid[i]);
 div.textContent= grid[i] ;
 div.setAttribute("id",i)
 container.appendChild(div);
@@ -69,17 +55,12 @@ container.appendChild(div);
 
 };
 
-//public values to return, think about more
-return {grid, gameWin, clearBoard, gridValue, renderBoard};
+return {grid, gameWin, gameTie, clearBoard, renderBoard};
 
 })();
 
-
-
 //player factory function
-
 const Player = (name) => {
-    
     return {name};
 };
 
@@ -87,55 +68,66 @@ const Player = (name) => {
 
 const gameFlow = (() => {
 
-//function to check if any wins or ties
+let mark="X";
+let playCount=0;
+//check if win or tie
 const checkStatus = () => {    
-let toCheck=[[0,1,2],[0,3,6],[0,4,8],[3,4,5],[6,7,8],[6,4,2],[2,5,8]];
+playCount++;
+let toCheck=[[0,1,2],[0,3,6],[0,4,8],[3,4,5],[6,7,8],[6,4,2],[2,5,8],[1,4,7]];
 let winner="";
 for (let i=0; i<toCheck.length; i++) {
-    console.log(toCheck[i]);
     if(gameboard.gameWin(toCheck[i])) {
         winner=gameboard.gameWin(toCheck[i]);
-        console.log("Winner Exists");
         return winner;
     }
     else {
         winner=false;
     }
 }
-if (!winner && gameboard.gameTie) {
+if (!winner && playCount===9) {
     winner="Tie";
 }
-console.log(winner);
 return winner;
 };
 
 const endGame = (value) => {
     let champion="No One";
 if (value==="X") {
-    champion="Player1"; //add in player name here
+    champion= player1.name; 
+}
+else if (value==="O"){
+    champion= player2.name; 
 }
 else {
-    champion="Player2"; //add in player name here
+    champion="Tie";
 }
-console.log("The Winner is "+champion+"!");
-console.log("end game");
+let winPopup = document.getElementById("winPopup");
+winPopup.style.display= "block";
 
+if (champion==="Tie") {
+    winPopup.textContent = `It's a Tie!`;
+}
+else {
+    winPopup.textContent = `Congratulations the winner is ${champion}!`;
+}
 };
 
 const newGame = () => {
 
-//reset board, remove all divs, read it all, reset mark, reset grid array
+let winPopup = document.getElementById("winPopup");
+winPopup.style.display= "none";
+//reset board and values
 turn=0;
 mark="X";
+winFlag=false;
+playCount=0;
 
 gameboard.clearBoard();
 gameboard.renderBoard();
 gameFlow.addClickEvents(".squares");
-console.log("new game");
-
 };
 
-//next turn function
+//increment turn function
 let turn=0;
 const incrementTurn = () => {
 turn++;
@@ -149,15 +141,11 @@ const whoTurn = () => {
     else {
         return 2;
     }
-}
+};
 
-//function to play a turn
+let winFlag=false;
+//play a turn
 const playTurn = () => {
-
-//after user clicks
-//check whos turn it is
-//get that marker
-//set the text content to that marker on click
 //increment turn
 incrementTurn();
 
@@ -168,29 +156,25 @@ else if (whoTurn() ===2){
     mark="O";
 }
 
-//when user clicks value will change
-
 //check if win/tie
 let status= checkStatus();
-console.log("Win Status is "+status);
 if (status) {
-    console.log("Winner Chosen "+status);
+    winFlag=true;
     endGame(status);
-}
 
-}
+};
+};
 
-//function to add event listeners
+//add event listeners
 const addClickEvents = (itemClass) => {
     const allItems = document.querySelectorAll(itemClass);
     allItems.forEach(( toggle) => {
         toggle.addEventListener("click", () => {
 
-            if (toggle.getAttribute("data") !== "clicked") {
+            if (toggle.getAttribute("data") !== "clicked" && !winFlag) {
             xOrO(toggle.getAttribute("id"));
             gameboard.grid[toggle.getAttribute("id")]=mark;
             playTurn();
-            console.log("Clicked on "+ toggle.getAttribute("id"));
             toggle.setAttribute("data","clicked");
             }
         });
@@ -200,19 +184,14 @@ const addClickEvents = (itemClass) => {
 const xOrO = (id) => {
     let display=mark;
     let div= document.getElementById(id);
-    console.log(display);
     div.textContent = display;
 
 };
 
-//make a full play game function that takes 2 players as arguments and then lets them play a full game
-//play game
-const playGame = (player1, player2) => {
+const playGame = () => {
     gameboard.renderBoard();
     gameFlow.addClickEvents(".squares");
     renderButtons();
-    
-
 };
 
 const renderButtons = () => {
@@ -220,8 +199,21 @@ const renderButtons = () => {
 let formPopup= document.getElementById("formPopup");
 let inputForm= document.getElementById("startGame");
 inputForm.addEventListener("click", function () {
-    let inputname1 = document.getElementById("player1").value;
-    let inputname2= document.getElementById("player2").value;
+    let inputname1 = document.getElementById("play1").value;
+    let inputname2= document.getElementById("play2").value;
+    if (inputname1 !== "") {
+        player1.name = inputname1;
+    }
+    else if (inputname1 === "") {
+        player1.name="Player1";
+    }
+    if (inputname2 !== "") {
+        player2.name= inputname2;
+    }
+    else if (inputname2 === "") {
+        player2.name= "Player2";
+    }
+
     formPopup.style.display= "none";
 });
 openForm.addEventListener("click", function () {
@@ -233,19 +225,21 @@ openForm.addEventListener("click", function () {
         formPopup.style.display= "block";
     }
 });
+
+let gameButton = document.getElementById("newGame");
+gameButton.addEventListener("click", function () {
+    newGame();
+});
 };
 
-
-
-//public things to return
-return { whoTurn, incrementTurn, checkStatus, addClickEvents, playGame, newGame};
-
+return { whoTurn, incrementTurn, checkStatus, addClickEvents, playGame, newGame, mark};
 })();
 
-let mark="X";
+//initialize players
+const player1 = Player("Player1");
+const player2= Player("Player2");
 
-//initialize players?
-
-gameFlow.playGame(); //add in players as parameters so can grab their names for the end
+//start game
+gameFlow.playGame();
 
 

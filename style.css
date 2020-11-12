@@ -1,3 +1,7 @@
+body {
+    background-color: ghostwhite;
+}
+
 #container {
     border: 1px solid black;
     display: grid;
@@ -11,17 +15,19 @@
     align-items: center;
     line-height: 150px;
     font-size: 5em;
-    background-color: grey;
-
+    background-color: #0d0b69;
 }
 
 .squares {
-    /* margin: 2px; */
     border: 1px solid black;
     height: 150px;
     width: 150px;
-    background-color: white;
+    background-color: #a7bfca;
+}
 
+.squares:hover {
+    border: 2px solid grey;
+    background-color:  #cbe7f5;
 }
 
 #newGame {
@@ -42,5 +48,31 @@
     position: relative;
     margin: 10px auto auto auto;
     text-align: center;
+}
 
+#winPopup {
+    position: absolute;
+    top: 10px;
+    z-index: 3;
+    height: 50px;
+    text-align: center;
+    display: none;
+    font-size: 2em;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+}
+
+#title {
+    position: absolute;
+    top: 45px;
+    z-index: 3;
+    height: 50px;
+    text-align: center;
+    display: block;
+    font-size: 3em;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
 }
