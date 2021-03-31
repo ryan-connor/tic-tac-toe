@@ -1,3 +1,8 @@
+<h4 align="center">
+<img alt="Tic Tac Toe Gif" src="demo/TicTacToe.gif" height="400px">
+<img alt="Tic Tac Toe Image" src="demo/TicTacToe.png" height="400px">
+</h4>
+
 ## Tic Tac Toe
 
 2 Player Tic Tac Toe Game
